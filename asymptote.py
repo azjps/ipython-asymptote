@@ -6,6 +6,7 @@ import os
 import shutil
 import subprocess
 import tempfile
+
 from IPython.core.magic import (
     magics_class, line_magic, line_cell_magic, Magics)
 from IPython.core.magic_arguments import (
@@ -63,12 +64,13 @@ class AsymptoteMagic(Magics):
     entered into the IPython cell, and outputs image
     rendered by Asymptote.
     
-	TODO: retain asymptote interpreter history between
-	multiple asymptote code cells. For example, can define
-	common setup (diagram size, pens) in this manner.
+    TODO: retain asymptote interpreter history between
+    multiple asymptote code cells. For example, can define
+    common setup (diagram size, pens) in this manner.
     TODO: implement way to communicate between python and
     asymptote, similar to Rpush/Rpull IPython magics. Should
     be easy with an api similar to http://emmett.ca/PyAsy/.
+    TODO: unicode handling.
     """
     
     def __init__(self, shell, cache_display_data=False):
@@ -142,7 +144,8 @@ class AsymptoteMagic(Magics):
     def run_asy(self, asy_file, img_file=None, fmt="png"):
         """Runs asy code in asy_file and returns IPython image"""
         asy_img, asy_stdout = run_asy_file(asy_file, img_file, fmt)
-        print(asy_stdout)
+        if len(asy_stdout) > 0:
+            print(asy_stdout)
         return asy_img
         
 def run_asy_file(asy_file, img_file=None, fmt="png"):
